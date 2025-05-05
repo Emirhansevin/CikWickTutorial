@@ -1,0 +1,69 @@
+using System;
+using Unity.VisualScripting;
+using UnityEngine;
+
+public class PlayerAnimationController : MonoBehaviour
+{
+    [SerializeField] private Animator _playerAnimator;
+
+    private PlayerController _playerController;
+    private StateController _stateController;
+
+    private void Awake()
+    {
+        _playerController = GetComponent<PlayerController>();
+        _stateController = GetComponent<StateController>();
+    }
+    private void Start()
+    {
+        _playerController.OnPlayerJumped += PlayerController_OnPlayerJumped;
+    }
+
+   
+
+    private void Update()
+    {
+        SetPlayerAnimations();
+
+
+    }
+
+    private void PlayerController_OnPlayerJumped()
+    {
+        _playerAnimator.SetBool(Conts.PlayerAnimations.IS_JUMPÝNG, true);
+        Invoke(nameof(ResetJumping), 0.5f);
+
+
+    }
+    private void ResetJumping()
+    {
+        _playerAnimator.SetBool(Conts.PlayerAnimations.IS_JUMPÝNG, false);
+    }
+
+    private void SetPlayerAnimations()
+    {
+        var currentState = _stateController.GetCurrentState();
+
+       
+        switch(currentState)
+        {
+            case PlayerState.Idle:
+                _playerAnimator.SetBool(Conts.PlayerAnimations.IS_SLIDING,false);
+                _playerAnimator.SetBool(Conts.PlayerAnimations.IS_MOVÝNG, false);
+                break;
+            case PlayerState.Move:
+                _playerAnimator.SetBool(Conts.PlayerAnimations.IS_SLIDING, false);
+                _playerAnimator.SetBool(Conts.PlayerAnimations.IS_MOVÝNG, true);
+                break;
+
+            case PlayerState.SlideIdle:
+                _playerAnimator.SetBool(Conts.PlayerAnimations.IS_SLIDING, true);
+                _playerAnimator.SetBool(Conts.PlayerAnimations.IS_SLIDING_ACTÝVE, false);
+                break;
+            case PlayerState.Slide:
+                _playerAnimator.SetBool(Conts.PlayerAnimations.IS_SLIDING, true);
+                _playerAnimator.SetBool(Conts.PlayerAnimations.IS_SLIDING_ACTÝVE, true);
+                break;
+        }
+    }
+}
