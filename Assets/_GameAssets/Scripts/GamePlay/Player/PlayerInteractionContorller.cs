@@ -8,17 +8,11 @@ public class PlayerInteractionContorller : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        if (other.CompareTag("GoldWheat"))
+        if(other.gameObject.TryGetComponent<ICollectible>(out var collectible))
         {
-            other.gameObject?.GetComponent<GoldWheatCollectibles>().Collect();
+            collectible.Collect();
         }
-        if (other.CompareTag("HolyWheat"))
-        {
-            other.gameObject?.GetComponent<HolyWheatCollectibles>().Collect();
-        }
-        if (other.CompareTag("RottenWheat"))
-        {
-            other.gameObject?.GetComponent<RottenWheatCollectibles>().Collect();
-        }
+
+       
     }
 }

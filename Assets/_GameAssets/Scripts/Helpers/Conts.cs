@@ -12,6 +12,11 @@ public class Conts : MonoBehaviour
         public const string IS_SLIDING_ACTÝVE = "IsSlidingActive";
     }
 
-   
+    public struct WheatTypes
+    {
+        public const string GOLD_WHEAT = "GoldWheat";
+        public const string HOLY_WHEAT = "HolyWheat";
+        public const string ROTTEN_WHEAT = "RottenWheat";
+    }
 }
 
