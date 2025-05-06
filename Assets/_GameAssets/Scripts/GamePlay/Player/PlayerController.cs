@@ -42,6 +42,8 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody _playerRigidbody;
 
+    
+
     private float _startingMovementSpeed, _startingJumpForce;
 
     private float _horizontalInput, _verticalInput ;
@@ -204,6 +206,10 @@ public class PlayerController : MonoBehaviour
     private void ResetJumpForce()
     {
         _movementSpeed = _startingMovementSpeed;
+    }
+    public Rigidbody  GetPlayerRigidBody()
+    {
+        return _playerRigidbody;
     }
 
 

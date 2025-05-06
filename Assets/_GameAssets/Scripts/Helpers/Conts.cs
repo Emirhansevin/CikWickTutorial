@@ -12,6 +12,11 @@ public class Conts : MonoBehaviour
         public const string IS_SLIDING_ACTÝVE = "IsSlidingActive";
     }
 
+    public struct OtherAnimaitons
+    {
+        public const string IS_SPATULA_JUMPING = "IsSpatulaJumping";
+    }
+
     public struct WheatTypes
     {
         public const string GOLD_WHEAT = "GoldWheat";
