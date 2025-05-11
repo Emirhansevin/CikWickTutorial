@@ -33,7 +33,7 @@ public class PlayerHealthUI : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.O))
         {
-            AnimiateDamage();
+            AnimateDamage();
         }
         if (Input.GetKeyDown(KeyCode.P))
         {
@@ -41,7 +41,7 @@ public class PlayerHealthUI : MonoBehaviour
         }
     }
 
-    public void AnimiateDamage()
+    public void AnimateDamage()
     {
         for (int i = 0; i < _playerHealthImage.Length; i++)
         {
