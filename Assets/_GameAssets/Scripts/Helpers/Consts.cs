@@ -1,8 +1,11 @@
 using UnityEngine;
 
-public class Conts : MonoBehaviour
+public class Consts : MonoBehaviour
 {
-   
+   public struct SceneNames
+    {
+        public  const string GAME_SCENE = "GameScene";
+    }
 
     public struct PlayerAnimations
     {
