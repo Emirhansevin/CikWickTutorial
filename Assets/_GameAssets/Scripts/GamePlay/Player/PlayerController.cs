@@ -37,17 +37,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _playerHeight;
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private float _groundDrag;
-   
+
 
     private StateController _stateController;
 
     private Rigidbody _playerRigidbody;
 
-    
+
 
     private float _startingMovementSpeed, _startingJumpForce;
 
-    private float _horizontalInput, _verticalInput ;
+    private float _horizontalInput, _verticalInput;
 
     private Vector3 _movementDirection;
     private bool _isSliding;
@@ -62,15 +62,15 @@ public class PlayerController : MonoBehaviour
         _startingMovementSpeed = _movementSpeed;
         _startingJumpForce = _jumpForce;
 
-        
+
     }
-   
+
     private void Update()
     {
-        if (GameManager.Instance.GetCurrentGameState() !=GameState.Play &&
+        if (GameManager.Instance.GetCurrentGameState() != GameState.Play &&
             GameManager.Instance.GetCurrentGameState() != GameState.Resume)
         {
-            
+
         }
         SetInputs();
         SetStates();
@@ -104,8 +104,8 @@ public class PlayerController : MonoBehaviour
             SetPlayerJumping();
             Invoke(nameof(ResetJumping), _jumpCooldown);
         }
-        
-        
+
+
 
 
     }
@@ -122,22 +122,22 @@ public class PlayerController : MonoBehaviour
             _ when movementDirection != Vector3.zero && isGrounded && !isSliding => PlayerState.Move,
             _ when movementDirection != Vector3.zero && isGrounded && isSliding => PlayerState.Slide,
             _ when movementDirection == Vector3.zero && isGrounded && isSliding => PlayerState.SlideIdle,
-            _ when !_canJump && !isGrounded =>PlayerState.Jump,
+            _ when !_canJump && !isGrounded => PlayerState.Jump,
             _ => currentState
         };
-        if (newState !=currentState)
+        if (newState != currentState)
         {
             _stateController.ChangeState(newState);
             OnPlayerStateChange?.Invoke(newState);
 
 
         }
-        
+
     }
     private void SetPlayerMoment()
     {
         _movementDirection = _orientationTransform.forward * _verticalInput +
-            _orientationTransform.right * _horizontalInput ;
+            _orientationTransform.right * _horizontalInput;
         float forceMultipler = _stateController.GetCurrentState() switch
         {
             PlayerState.Move => 1f,
@@ -156,11 +156,11 @@ public class PlayerController : MonoBehaviour
             PlayerState.Move => _groundDrag,
             PlayerState.Slide => _slideDrag,
             PlayerState.Jump => _airDrag,
-             _ => _playerRigidbody.linearDamping
+            _ => _playerRigidbody.linearDamping
 
 
         };
-       
+
 
     }
     private void LimitPlayerSpeed()
@@ -170,12 +170,12 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 limitedVelocity = flatVelocity.normalized * _movementSpeed;
             _playerRigidbody.linearVelocity = new Vector3(limitedVelocity.x, _playerRigidbody.linearVelocity.y, limitedVelocity.z);
-            
+
         }
     }
-        private void SetPlayerJumping()
+    private void SetPlayerJumping()
     {
-        
+
         OnPlayerJumped?.Invoke();
         _playerRigidbody.linearVelocity = new Vector3(_playerRigidbody.linearVelocity.x, 0f, _playerRigidbody.linearVelocity.z);
         _playerRigidbody.AddForce(transform.up * _jumpForce, ForceMode.Impulse);
@@ -186,7 +186,7 @@ public class PlayerController : MonoBehaviour
     }
 
     #region Helpers Function
-    
+
     private bool IsGrounded()
     {
         return Physics.Raycast(transform.position, Vector3.down, _playerHeight * 0.5f + 0.2f, _groundLayer);
@@ -211,7 +211,7 @@ public class PlayerController : MonoBehaviour
         _movementSpeed = _startingMovementSpeed;
     }
 
-    public void SetJumpForce(float force ,float duration)
+    public void SetJumpForce(float force, float duration)
     {
         _jumpForce += force;
         Invoke(nameof(ResetJumpForce), duration);
@@ -220,12 +220,30 @@ public class PlayerController : MonoBehaviour
     {
         _movementSpeed = _startingMovementSpeed;
     }
-    public Rigidbody  GetPlayerRigidBody()
+    public Rigidbody GetPlayerRigidBody()
     {
         return _playerRigidbody;
     }
 
+    public bool CanCatChase()
+    {
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit,
+            _playerHeight * 0.5f + 0.2f, _groundLayer))
+        {
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer(Consts.Layers.FLOOR_LAYER))
+            {
+                return true;
+            }
+            else if (hit.collider.gameObject.layer == LayerMask.NameToLayer(Consts.Layers.GROUND_LAYER))
+            {
+                return false;
+            }
+           
+        }
+        return false;
 
-    #endregion
 
+        #endregion
+
+    }
 }

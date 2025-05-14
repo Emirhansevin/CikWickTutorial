@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private int _maxEggCount = 5;
 
-    [SerializeField] private float _delay = 1f;
+    [SerializeField] private float _delay = .3f;
 
     private GameState _currentGameState;
 
