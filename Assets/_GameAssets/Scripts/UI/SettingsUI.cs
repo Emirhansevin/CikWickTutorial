@@ -32,8 +32,8 @@ public class SettingsUI : MonoBehaviour
 
     private Image _blackBackgroundImage;
 
-    private bool _isMusicActive;
-    private bool _isSoundActive;
+    [SerializeField]private bool _isMusicActive;
+    [SerializeField]private bool _isSoundActive;
 
     private void Awake()
     {
@@ -49,7 +49,7 @@ public class SettingsUI : MonoBehaviour
         });
 
         _musicButton.onClick.AddListener(OnMusicButtonClicked);
-        _musicButton.onClick.AddListener(OnSoundButtonClicked);
+        _soundButton.onClick.AddListener(OnSoundButtonClicked);
     }
 
     private void OnSoundButtonClicked()
@@ -65,6 +65,7 @@ public class SettingsUI : MonoBehaviour
         AudioManager.Instance.Play(SoundType.ButtonClickSound);
         _isMusicActive = !_isMusicActive;
         _musicButton.image.sprite = _isMusicActive ? _musicActiveSprite : _musicPassiveSprite;
+        
         BackgroundMusic.Instance.SetMusicMute(!_isMusicActive);
     }
 

@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
         if (GameManager.Instance.GetCurrentGameState() != GameState.Play &&
             GameManager.Instance.GetCurrentGameState() != GameState.Resume)
         {
-
+            return;
         }
         SetInputs();
         SetStates();
