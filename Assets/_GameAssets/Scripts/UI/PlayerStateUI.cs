@@ -1,6 +1,8 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.UI;
 
 public class PlayerStateUI : MonoBehaviour
@@ -16,6 +18,8 @@ public class PlayerStateUI : MonoBehaviour
     [SerializeField] private RectTransform _boosterSpeedTransform;
     [SerializeField] private RectTransform _boosterJumpTransform;
     [SerializeField] private RectTransform _boosterSlowTransform;
+
+    [SerializeField] private PlayableDirector _playableDirector;
 
     [Header("Images")] 
 
@@ -56,10 +60,18 @@ public class PlayerStateUI : MonoBehaviour
     private void Start()
     {
         _playerContorller.OnPlayerStateChange += PlayerController_OnPlayerStateChange;
-        SetStateUserInterface(_playerWalkingActiveSprite, _playerSlidingPassiveSprite,
-                    _playerSlidingTransform, _playerSlidingTransform);
+        _playableDirector.stopped += OnTimelineFinished;
+
+        
 
     }
+
+    private void OnTimelineFinished(PlayableDirector director)
+    {
+        SetStateUserInterface(_playerWalkingActiveSprite, _playerSlidingPassiveSprite,
+                    _playerSlidingTransform, _playerSlidingTransform);
+    }
+
     private void PlayerController_OnPlayerStateChange(PlayerState playerState)
     {
         switch(playerState)
